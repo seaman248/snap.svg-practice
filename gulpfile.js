@@ -2,8 +2,7 @@
 
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
-var coffee = require('gulp-coffee');
-var gutil = require('gulp-util');
+
 gulp.task('connect', function () {
     var connect = require('connect');
     var app = connect()
@@ -18,25 +17,17 @@ gulp.task('connect', function () {
         });
 });
 
-gulp.task('coffee', function(){
-    gulp.src('app/sctipts/coffee/**/*.coffee')
-        .pipe(coffee({bare: true}).on('error', gutil.log))
-        .pipe(gulp.dest('./app/scripts/'));
-});
-
 gulp.task('serve', ['connect'], function () {
     require('opn')('http://localhost:9000');
 });
 
-gulp.task('watch', ['coffee','connect', 'serve'], function () {
+gulp.task('watch', ['connect', 'serve'], function () {
     var server = $.livereload();
-    gulp.watch('app/scripts/coffee/**/*.coffee', ['coffee']);
 
     gulp.watch([
         'app/*.html',
         'app/styles/**/*.css',
-        'app/scripts/**/*.js',
-        'app/scripts/coffee/**/*.coffee'
+        'app/scripts/**/*.js'
     ]).on('change', function (file) {
         server.changed(file.path);
     });
